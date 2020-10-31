@@ -50,8 +50,10 @@ app.use(bodyParser.json())
 
 //======= Routes =============
 const authRoute = require('./routes/auth');
+const adminRoute = require('./routes/admin/auth');
 //middleware
-app.use('/api',authRoute)
+app.use('/api', authRoute);
+app.use('/api', adminRoute);
 //============================
 
 
