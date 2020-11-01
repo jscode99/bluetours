@@ -2,18 +2,19 @@ const express = require("express");
 //router import
 const router = express.Router();
 //controller
-const {signup,signin,requireSignin} =require('../controller/auth')
-
-
+const { signup, signin, requireSignin } = require("../controller/auth");
+const {
+  validateSigninRequest,
+  isRequestValid,
+  validateSignupRequest,
+} = require("../validator/auth");
 
 //===================== signup route =================
-router.post("/signup",signup);
+router.post("/signup", validateSignupRequest, isRequestValid, signup);
 //====================================================
 
-
-
 //======================signin route===================
-router.post("/signin",signin);
+router.post("/signin", validateSigninRequest, isRequestValid, signin);
 //=====================================================
 
 //====================== profile ======================
