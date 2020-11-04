@@ -32,13 +32,13 @@ export const Header = props => {
             </NavDropdown> */}
             </Nav>
             <Nav>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <NavLink to="/" className="nav-link">
                   Home
                 </NavLink>
-              </li>
+              </li> */}
               <li className="nav-item">
-                <NavLink to="signin" className="nav-link">
+                <NavLink to="/" className="nav-link">
                   Signin
                 </NavLink>
               </li>

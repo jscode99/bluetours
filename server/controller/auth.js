@@ -9,9 +9,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //key
 const { JWT_SECRET } = require("../key");
+//crypto
+const crypto=require('crypto')
+
 
 //============ Module signup ======================================
-exports.signup = (req, res) => {
+exports.signup =  (req, res) => {
  
   //=========== Destructuring the req body =========================
   const { firstname, lastname, email, password } = req.body;
@@ -21,7 +24,7 @@ exports.signup = (req, res) => {
   User.findOne({ email: email })
     .then(savedUser => {
       if (savedUser)
-        return res.status(422).json({ message: "User already exists" });
+        return res.status(422).json({ error: "User already exists !!!" });
       //password hashing
       bcrypt.hash(password, 12).then(hashedPassword => {
         //creating new user
@@ -29,18 +32,23 @@ exports.signup = (req, res) => {
           firstname,
           lastname,
           email,
+          emailToken: crypto.randomBytes(64).toString('hex'),
+          isVerified:false,
           password: hashedPassword,
           username: Math.random().toString(),
         });
+       
         user
           .save()
-          .then(data => {
+          .then((data) => {
             console.log(data);
-            res.status(200).json({ message: "Account created !!" });
+            res.status(200).json({ success: "Account created & Now Signin" });
+            
           })
           .catch(err => {
             console.log(err);
             res.status(422).json({ message: "Something went wrong !!" });
+            
           });
       });
       //catching database error
@@ -52,7 +60,7 @@ exports.signup = (req, res) => {
 //================================================================
 
 //================== module signin ================================
-exports.signin = (req, res) => {
+exports.signin = (req, res,next) => {
   const { email, password } = req.body;
   User.findOne({ email: email }).exec((err, user) => {
     if (err) return res.status(422).json({ message: "Invalid email" });

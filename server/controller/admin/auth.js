@@ -18,7 +18,7 @@ exports.signup = (req, res) => {
   User.findOne({ email: email })
     .then(savedUser => {
       if (savedUser)
-        return res.status(422).json({ message: "Admin already exists" });
+        return res.status(422).json({ error: "Admin already exists" });
       //password hashing
       bcrypt.hash(password, 12).then(hashedPassword => {
         //creating new user
@@ -34,7 +34,7 @@ exports.signup = (req, res) => {
           .save()
           .then(data => {
             console.log(data);
-            res.status(200).json({ message: "Admin created !!" });
+            res.status(200).json({ success: "Admin created !!" });
           })
           .catch(err => {
             console.log(err);
@@ -53,7 +53,7 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email: email }).exec((err, user) => {
-    if (err) return res.status(422).json({ message: "Invalid email" });
+    if (err) return res.status(422).json({ error: "Invalid email" });
     if (user && user.role === "admin") {
       bcrypt.compare(password, user.password).then(doMatch => {
         if (doMatch) {
@@ -67,7 +67,7 @@ exports.signin = (req, res) => {
         }
       });
     } else {
-      res.status(422).json({ message: "Something went wrong !!" });
+      res.status(422).json({ error: "Invalid email or password !!" });
     }
   });
 };

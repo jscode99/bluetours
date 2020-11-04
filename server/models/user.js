@@ -41,6 +41,8 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
+    emailToken: String,
+    isVerified:Boolean,
   },
   { timestamps: true },
 );

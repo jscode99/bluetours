@@ -1,12 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { MONGOURI, PORT } = require('./key');
-const bodyParser=require('body-parser')
+const bodyParser = require('body-parser');
+
 
 
 //========= App ===========
 const app = express();
 //=========================
+
+
 
 
 //======== DATABASE CONNECTION ============
@@ -24,7 +27,7 @@ mongoose
   })
   .then(
     () => {
-      console.log("database connected");
+      console.log("Database connected");
     },
     err => {
       /** handle initial connection error */
