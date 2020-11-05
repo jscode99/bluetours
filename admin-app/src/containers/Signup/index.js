@@ -57,7 +57,7 @@ function Signup() {
             classes: "#388e3c green darken-2",
           });
           //redirecting to signin route
-            history.push("/");
+            history.push("/signin");
         }
     
       })
@@ -130,7 +130,7 @@ function Signup() {
                   </Form>
                 </Card.Body>
                 <Card.Footer className="text-muted">
-                  Already have an account ? <Link to="/">Signin</Link>{" "}
+                  Already have an account ? <Link to="/signin">Signin</Link>{" "}
                 </Card.Footer>
               </Card>
             </Col>

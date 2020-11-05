@@ -1,5 +1,6 @@
-var passport = require("passport");
-var GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
+const key = require("../key");
 
 // Use the GoogleStrategy within Passport.
 //   Strategies in passport require a `verify` function, which accept
@@ -8,19 +9,12 @@ var GoogleStrategy = require("passport-google-oauth").OAuthStrategy;
 passport.use(
   new GoogleStrategy(
     {
-      consumerKey:
-        "670209693410-jephrvr7n8fp27m39ahao38n14jm1aeu.apps.googleusercontent.com",
-      consumerSecret: "rgwxfP7W3-8g_TKW_YQA-yfk",
-      callbackURL: "http://www.example.com/auth/google/callback",
+      consumerKey: key.google.consumerKey,
+      consumerSecret: key.google.consumerSecret,
+      callbackURL: "/api/admin/google/redirect",
     },
-    function (token, tokenSecret, profile, done) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return done(err, user);
-      });
-    },
-  ),
-);
+    function () {
+     
+      })
+)
 
-//client id and secret
-//670209693410-jephrvr7n8fp27m39ahao38n14jm1aeu.apps.googleusercontent.com
-//rgwxfP7W3-8g_TKW_YQA-yfk

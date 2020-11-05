@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { MONGOURI, PORT } = require('./key');
 const bodyParser = require('body-parser');
+const passportSetup = require('./config/passport');
+var cors = require("cors");
 
 
 
@@ -48,6 +50,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 //============================
+app.use(cors());
 
 
 

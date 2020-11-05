@@ -1,23 +1,27 @@
-const express = require("express");
-//router import
-const router = express.Router();
+const router = require("express").Router();
 //controller
-const { signup, signin, requireSignin } = require('../../controller/admin/auth')
-//validator
 const {
-  validateSigninRequest,
-  isRequestValid,
-  validateSignupRequest,
-} = require("../../validator/auth");
-
-
+  signup,
+  signin,
+  requireSignin,
+  logout,
+  googleLogin,
+} = require("../../controller/admin/auth");
+const passport = require("passport");
 
 //===================== signup route =================
-router.post("/admin/signup",validateSignupRequest,isRequestValid,signup);
+router.post("/admin/signup", signup);
 //====================================================
 
+//===================== Google auth ===================
+router.post("/admin/googleLogin",googleLogin);
+//=====================================================
+
 //======================signin route===================
-router.post("/admin/signin",validateSigninRequest,isRequestValid,signin);
+router.post("/admin/signin", signin);
+//=====================================================
+//======================= Logout ======================
+router.get("/admin/logout", logout);
 //=====================================================
 
 //====================== profile ======================

@@ -1,6 +1,3 @@
-const express = require("express");
-//router import
-const router = express.Router();
 //model user
 const User = require("../../models/user");
 //bcrypt
@@ -9,6 +6,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //key
 const { JWT_SECRET } = require("../../key");
+//clientID
+const key = require("../../key");
+//google auth lib
+const { OAuth2Client } = require("google-auth-library");
+
+
+//====================== New OAuth2Client ============================
+const client = new OAuth2Client(key.google.consumerKey);
+//=============================================================
 
 //============ Module signup ======================================
 exports.signup = (req, res) => {
@@ -49,6 +55,66 @@ exports.signup = (req, res) => {
 };
 //================================================================
 
+//====================== Google Login ============================
+exports.googleLogin = (req,res) => {
+  const { tokenId } = req.body;
+  client
+    .verifyIdToken({ idToken:tokenId, audience: key.google.consumerKey })
+    .then(response => {
+      const { email_verified, name, email } = response.payload;
+      if (email_verified) {
+        User.findOne({ email }).exec((err, user) => {
+          if (err) {
+            return res.status(422).json({
+              error: "Something went wrong...",
+            });
+          } else {
+            if (user) {
+              //jwt token auth
+              const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+                expiresIn: "7d",
+              });
+              //DESTRUCTURING THE USER
+              const { _id, role, name, email } = user;
+              res.status(200).json({ token: token, user: { _id, role, name, email } });
+            } else {
+              let password = email + JWT_SECRET
+              let user = new User({
+                name,
+                email,
+                password,
+                role: "admin",
+              });
+            user.save((err, data) => {
+                if (err) {
+                  return res.status(422).json({
+                    error: "Something went wrong...",
+                  });
+                }
+                //jwt token auth
+                const token = jwt.sign({ _id: data._id }, JWT_SECRET, {
+                  expiresIn: "7d",
+                });
+                //DESTRUCTURING THE USER
+                const { _id, role, name, email } = user;
+                res
+                  .status(200)
+                  .json({ token: token, user: { _id, role, name, email } });
+              })
+            }
+          }
+        });
+      }
+    });
+};
+//===============================================================
+
+//========================== Logout module========================
+exports.logout = (req, res) => {
+  return res.send("logout");
+};
+//================================================================
+
 //================== module signin ================================
 exports.signin = (req, res) => {
   const { email, password } = req.body;
@@ -58,7 +124,9 @@ exports.signin = (req, res) => {
       bcrypt.compare(password, user.password).then(doMatch => {
         if (doMatch) {
           //jwt token auth
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+            expiresIn: "7d",
+          });
           //DESTRUCTURING THE USER
           const { _id, role, email } = user;
           res.status(200).json({ token: token, user: { _id, role, email } });
