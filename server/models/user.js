@@ -3,31 +3,19 @@ const mongoose = require("mongoose");
 //======== CREATING SCHEMA FOR USERS ========
 const userSchema = new mongoose.Schema(
   {
-    firstname: {
-      type: String,
-      required: true,
-      trim: true,
-      min: 3,
-      max: 20,
+    emailVerificationStatus: {
+      type: Boolean,
+      default:false
     },
-    lastname: {
-      type: String,
-      required: true,
-      trim: true,
-      min: 3,
-      max: 20,
+    activeStatus: {
+      type: Boolean,
+      default:false
     },
-    username: {
+    fullname: {
       type: String,
-      required: true,
       trim: true,
-      unique: true,
-      index: true,
-      lowercase: true,
-    },
-    name: {
-      type: String,
-      require:true
+      required: true,
+      max:25
     },
     email: {
       type: String,
@@ -45,8 +33,6 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin"],
       default: "user",
     },
-    emailToken: String,
-    isVerified:Boolean,
   },
   { timestamps: true },
 );

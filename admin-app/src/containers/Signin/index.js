@@ -46,9 +46,11 @@ function Signin() {
       headers: { "Content-Type": "application/json" },
       data: { tokenId: res.tokenId },
     })
-      .then(res => {
-        console.log("Google login successfull", res);
-        history.push("/")
+      .then(response => {
+        response.json()
+      }).then(data => {
+        console.log("Logged in", data);
+        
       })
       .catch(err => {
         console.log(err);

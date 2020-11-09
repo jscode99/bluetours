@@ -12,14 +12,13 @@ function Signup() {
 
   // state initialization
   const [formdata, setformdata] = useState({
-    firstname: "",
-    lastname: "",
+    fullname:"",
     email: "",
     password: "",
   });
 
   //Destructuring formdata
-  const { firstname, lastname, email, password } = formdata;
+  const { fullname, email, password } = formdata;
 
   //Event Handlers
   const changeHandler = e => {
@@ -36,8 +35,7 @@ function Signup() {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        firstname: firstname,
-        lastname: lastname,
+       fullname:fullname,
         email: email,
         password: password
       })
@@ -82,8 +80,8 @@ function Signup() {
                   New to Blue tours ?{" "}
                 </Card.Header>
                 <Card.Body>
-                  <Form onSubmit={submitHandler} >
-                    <Row>
+                  <Form onSubmit={submitHandler}>
+                    {/* <Row>
                       <Col md={6}>
                         {" "}
                         <Input
@@ -106,7 +104,15 @@ function Signup() {
                           onChange={changeHandler}
                         />
                       </Col>
-                    </Row>
+                    </Row> */}
+                    <Input
+                      label="fullname"
+                      type="text"
+                      placeholder="Fullname"
+                      name="fullname"
+                      value={fullname}
+                      onChange={changeHandler}
+                    />
                     <Input
                       label="Email"
                       type="email"
