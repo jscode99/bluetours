@@ -57,7 +57,7 @@ exports.signup = async (req, res) => {
     const url = `${key.FRONTEND.host}${key.FRONTEND.emailActivationLink}${verify.code}`;
     await sendEmail(url, newUser.email, "Please verify your email address");
 
-    res.status(200).json({ success: "Admin created !!" });
+    res.status(200).json({ success: "Check your email & verify email address !!" });
     //catching database error
   } catch (error) {
     console.log(error);
@@ -184,6 +184,30 @@ exports.signin = (req, res) => {
   });
 };
 
+//================================================================
+
+//============================== Forgot password =================
+exports.forgotPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(422).json({ message: "User not found !!!" })
+    // Forgot password link creation
+    const verify = new verificationcode({
+      code: uuidv4(),
+      codeType: "FORGOT_PASSWORD",
+      userId: user.id,
+    });
+
+    await verify.save();
+
+    // Activation link generation
+    const url = `${key.FRONTEND.host}${key.FRONTEND.forgotPassword}${verify.code}`;
+    await sendEmail(url, user.email, "Reset your password");
+    res.status(200).json({message:"Check your mail account for password reset link..."})
+  } catch (error) {
+    console.log(error)
+  }
+}
 //================================================================
 
 //===================== RequireSignin =============================

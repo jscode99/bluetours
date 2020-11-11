@@ -7,6 +7,7 @@ const {
   logout,
   googleLogin,
   emailActivation,
+  forgotPassword
 } = require("../../controller/admin/auth");
 const passport = require("passport");
 
@@ -16,7 +17,11 @@ router.post("/admin/signup", signup);
 
 //================== Email activation =================
 router.post("/admin/email-activation",emailActivation)
-//====================================================
+//=====================================================
+
+//================= Forget password ===================
+router.post("/admin/forgot-password",forgotPassword)
+//=====================================================
 
 //===================== Google auth ===================
 router.post("/admin/googleLogin",googleLogin);

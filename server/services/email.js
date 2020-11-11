@@ -6,7 +6,6 @@ const client = new SMTPClient({
   user: key.SMTPSERVER.user,
   password: key.SMTPSERVER.password,
   host: key.SMTPSERVER.host,
-  port:key.SMTPSERVER.port,
   ssl: key.SMTPSERVER.ssl,
 });
 

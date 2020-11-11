@@ -55,7 +55,7 @@ function Signup() {
             classes: "#388e3c green darken-2",
           });
           //redirecting to signin route
-            history.push("/signin");
+            // history.push("/signin");
         }
     
       })
