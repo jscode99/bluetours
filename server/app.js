@@ -57,9 +57,11 @@ app.use(cors());
 //======= Routes =============
 const authRoute = require('./routes/auth');
 const adminRoute = require('./routes/admin/auth');
+const categoryRoute=require('./routes/Category')
 //middleware
 app.use('/api', authRoute);
 app.use('/api', adminRoute);
+app.use('/api',categoryRoute)
 //============================
 
 

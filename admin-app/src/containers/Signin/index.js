@@ -159,6 +159,9 @@ function Signin() {
                 <Card.Footer className="text-muted">
                   Create an account ? <Link to="signup">Signup</Link>{" "}
                 </Card.Footer>
+                <Card.Footer className="text-muted">
+                  Forgot password ? <Link to="EmailInput">Click here</Link>{" "}
+                </Card.Footer>
               </Card>
             </Col>
           </Row>

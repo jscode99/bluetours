@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, useHistory } from "react-router-dom";
 import Home from "./containers/Home";
 import Signin from "./containers/Signin";
 import Signup from "./containers/Signup";
+import EmailInput from './containers/EmailInput'
 import {reducer,initialState} from './Reducer/useReducer'
 
 //initializing createContext
@@ -34,6 +35,7 @@ const Routing = () => {
       <Route path="/" exact component={Home} />
       <Route path="/signin" exact component={Signin} />
       <Route path="/signup" exact component={Signup} />
+      <Route path="/EmailInput" exact component={EmailInput}/>
     </Switch>
   );
 };
