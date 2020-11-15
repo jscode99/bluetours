@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema(
     offer: {
       type: Number,
     },
+    quantity: {
+      type: Number,
+      required:true
+    },
     productPictures: [
       {
         img: {
@@ -43,10 +47,12 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",
+      required:true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required:true,
     },
     updatedAt: Date,
   },

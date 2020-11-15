@@ -26,7 +26,7 @@ router.post(
   "/product/create",
   requireSignin,
   adminMiddleware,
-  upload.single("productPictures"),
+  upload.array("productPictures"),
   createProduct,
 );
 //==============================================================================
