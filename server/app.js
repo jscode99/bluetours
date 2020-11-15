@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { MONGOURI, PORT } = require('./key');
 const bodyParser = require('body-parser');
-const passportSetup = require('./config/passport');
+// const passportSetup = require('./config/passport');
 var cors = require("cors");
 
 
@@ -10,9 +10,6 @@ var cors = require("cors");
 //========= App ===========
 const app = express();
 //=========================
-
-
-
 
 //======== DATABASE CONNECTION ============
 mongoose
@@ -29,7 +26,7 @@ mongoose
   })
   .then(
     () => {
-      console.log("Database connected");
+      console.log("==== Connected to database ===");
     },
     err => {
       /** handle initial connection error */
@@ -55,19 +52,21 @@ app.use(cors());
 
 
 //======= Routes =============
-const authRoute = require('./routes/auth');
-const adminRoute = require('./routes/admin/auth');
-const categoryRoute=require('./routes/Category')
+const authRoute = require('./src/routes/auth');
+const adminRoute = require("./src/routes/admin/auth");
+const categoryRoute = require("./src/routes/Category");
+const productRoute = require("./src/routes/Product");
 //middleware
 app.use('/api', authRoute);
 app.use('/api', adminRoute);
-app.use('/api',categoryRoute)
+app.use('/api', categoryRoute);
+app.use('/api', productRoute);
 //============================
 
 
 
 //==============PORT LISTENING===============
 app.listen(PORT, () => {
-    console.log(`Server is on port ${PORT}`);
+    console.log(`=== Server is on port ${PORT} ===`);
 });
 //============================================

@@ -8,7 +8,7 @@ const bcrypt = require("bcrypt");
 //jwt
 const jwt = require("jsonwebtoken");
 //key
-const { JWT_SECRET } = require("../key");
+const { JWT_SECRET } = require("../../key");
 //crypto
 const crypto=require('crypto')
 

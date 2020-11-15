@@ -1,4 +1,4 @@
-const key = require("../key");
+const key = require("../../key");
 const { SMTPClient } = require("emailjs");
 
 // Creating a client object

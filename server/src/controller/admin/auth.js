@@ -7,9 +7,9 @@ const bcrypt = require("bcrypt");
 //jwt
 const jwt = require("jsonwebtoken");
 //key
-const { JWT_SECRET } = require("../../key");
+const { JWT_SECRET } = require("../../../key");
 //clientID
-const key = require("../../key");
+const key = require("../../../key");
 //google auth lib
 const { OAuth2Client } = require("google-auth-library");
 // email

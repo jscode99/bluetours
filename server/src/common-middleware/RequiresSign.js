@@ -1,7 +1,7 @@
 // JWT
 const jwt = require("jsonwebtoken");
 //key
-const { JWT_SECRET } = require("../key");
+const { JWT_SECRET } = require("../../key");
 //model user
 const User = require("../models/user");
 
