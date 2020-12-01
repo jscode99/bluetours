@@ -26,7 +26,7 @@ mongoose
   })
   .then(
     () => {
-      console.log("==== Connected to database ===");
+      console.log("====== Connected to database sucessfully======");
     },
     err => {
       /** handle initial connection error */
@@ -37,17 +37,18 @@ mongoose
 
 
 
-
-//=======Data parsing========
-app.use(express.json())
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
+//================================================= 
+//=======Data parsing========
+app.use(express.json())
+//===========================
+
 // parse application/json
 app.use(bodyParser.json())
-//============================
+//=======================
 app.use(cors());
+//=======================
 
 
 
@@ -56,17 +57,19 @@ const authRoute = require('./src/routes/auth');
 const adminRoute = require("./src/routes/admin/auth");
 const categoryRoute = require("./src/routes/Category");
 const productRoute = require("./src/routes/Product");
+const cartRoute = require('./src/routes/Cart');
 //middleware
 app.use('/api', authRoute);
 app.use('/api', adminRoute);
 app.use('/api', categoryRoute);
 app.use('/api', productRoute);
+app.use('/api', cartRoute);
 //============================
 
 
 
 //==============PORT LISTENING===============
 app.listen(PORT, () => {
-    console.log(`=== Server is on port ${PORT} ===`);
+    console.log(`======= Server is running on port ${PORT} =======`);
 });
 //============================================

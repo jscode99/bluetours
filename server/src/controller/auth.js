@@ -1,6 +1,3 @@
-const express = require("express");
-//router import
-const router = express.Router();
 //model user
 const User = require("../models/user");
 //bcrypt
@@ -9,15 +6,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 //key
 const { JWT_SECRET } = require("../../key");
-//crypto
-const crypto=require('crypto')
-
 
 //============ Module signup ======================================
-exports.signup =  (req, res) => {
- 
+exports.signup = (req, res) => {
   //=========== Destructuring the req body =========================
-  const { firstname, lastname, email, password } = req.body;
+  const { fullname, email, password } = req.body;
   //=================================================================
 
   //========== finding user =========================================
@@ -29,26 +22,21 @@ exports.signup =  (req, res) => {
       bcrypt.hash(password, 12).then(hashedPassword => {
         //creating new user
         const user = new User({
-          firstname,
-          lastname,
+          fullname,
           email,
-          emailToken: crypto.randomBytes(64).toString('hex'),
-          isVerified:false,
           password: hashedPassword,
-          username: Math.random().toString(),
+          role: "user",
         });
-       
+
         user
           .save()
-          .then((data) => {
+          .then(data => {
             console.log(data);
             res.status(200).json({ success: "Account created & Now Signin" });
-            
           })
           .catch(err => {
             console.log(err);
             res.status(422).json({ message: "Something went wrong !!" });
-            
           });
       });
       //catching database error
@@ -60,15 +48,19 @@ exports.signup =  (req, res) => {
 //================================================================
 
 //================== module signin ================================
-exports.signin = (req, res,next) => {
+exports.signin = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email: email }).exec((err, user) => {
     if (err) return res.status(422).json({ message: "Invalid email" });
-    if (user) {
+    if (user && user.role === "user") {
       bcrypt.compare(password, user.password).then(doMatch => {
         if (doMatch) {
           //jwt token auth
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET);
+          const token = jwt.sign(
+            { _id: user._id, role: user.role },
+            JWT_SECRET,
+            { expiresIn: "7d" },
+          );
           //DESTRUCTURING THE USER
           const { _id, role, email } = user;
           res.status(200).json({ token: token, user: { _id, role, email } });

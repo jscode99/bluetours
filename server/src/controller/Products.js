@@ -1,5 +1,5 @@
 const Product = require("../models/Product");
-const shortid = require("shortid");
+// const shortid = require("shortid");
 const slugify = require("slugify");
 
 exports.createProduct = (req, res) => {

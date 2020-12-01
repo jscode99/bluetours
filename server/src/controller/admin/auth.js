@@ -17,7 +17,7 @@ const { sendEmail } = require("../../services/email");
 //uuid
 const { v4: uuidv4 } = require("uuid");
 // Moments
-const moment = require('moment');
+const moment = require("moment");
 
 //====================== New OAuth2Client ============================
 const client = new OAuth2Client(
@@ -39,12 +39,12 @@ exports.signup = async (req, res) => {
     const newUser = new User({
       fullname,
       email,
-      password:Password,
+      password: Password,
       role: "admin",
     });
 
     await newUser.save();
-    
+
     const verify = new verificationcode({
       code: uuidv4(),
       codeType: "EMAIL_ACTIVATION",
@@ -57,7 +57,9 @@ exports.signup = async (req, res) => {
     const url = `${key.FRONTEND.host}${key.FRONTEND.emailActivationLink}${verify.code}`;
     await sendEmail(url, newUser.email, "Please verify your email address");
 
-    res.status(200).json({ success: "Check your email & verify email address !!" });
+    res
+      .status(200)
+      .json({ success: "Check your email & verify email address !!" });
     //catching database error
   } catch (error) {
     console.log(error);
@@ -66,29 +68,34 @@ exports.signup = async (req, res) => {
 //================================================================
 
 //======================= Email Activation ======================
-exports.emailActivation = async (req, res,next) => {
+exports.emailActivation = async (req, res, next) => {
   try {
-    const verification = await verificationcode.findOne({ code: req.body.code }); 
-    if (!verification) return res.status(422).json({ error: "Invalid link !!!" })
+    const verification = await verificationcode.findOne({
+      code: req.body.code,
+    });
+    if (!verification)
+      return res.status(422).json({ error: "Invalid link !!!" });
     // Link Expiration logic using moment npm
     const now = moment();
     const linkCreated = moment(verification.createdAt);
-    const diff = now.diff(linkCreated, "minutes")
-    if (diff > 180) return res.status(422).json({ errorMin: "Oops..Link expired !!" });
+    const diff = now.diff(linkCreated, "minutes");
+    if (diff > 180)
+      return res.status(422).json({ errorMin: "Oops..Link expired !!" });
     // Updating user document
     const user = await User.findById(verification.userId);
     user.emailVerificationStatus = true;
     user.activeStatus = true;
     await user.save();
     // Sucess email generation
-    const body = "Successfully verified your email address"
+    const body = "Successfully verified your email address";
     await sendEmail(body, user.email, "Registration success !!");
-    return res.status(200).json({success:"Account created successfully !!!"})
-
+    return res
+      .status(200)
+      .json({ success: "Account created successfully !!!" });
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 //===============================================================
 
 //====================== Google Login ============================
@@ -168,9 +175,13 @@ exports.signin = (req, res) => {
       bcrypt.compare(password, user.password).then(doMatch => {
         if (doMatch) {
           //jwt token auth
-          const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
-            expiresIn: "7d",
-          });
+          const token = jwt.sign(
+            { _id: user._id, role: user.role },
+            JWT_SECRET,
+            {
+              expiresIn: "7d",
+            },
+          );
           //DESTRUCTURING THE USER
           const { _id, role, email } = user;
           res.status(200).json({ token: token, user: { _id, role, email } });
@@ -190,7 +201,7 @@ exports.signin = (req, res) => {
 exports.forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(422).json({ message: "User not found !!!" })
+    if (!user) return res.status(422).json({ message: "User not found !!!" });
     // Forgot password link creation
     const verify = new verificationcode({
       code: uuidv4(),
@@ -203,11 +214,11 @@ exports.forgotPassword = async (req, res) => {
     // Activation link generation
     const url = `${key.FRONTEND.host}${key.FRONTEND.forgotPassword}${verify.code}`;
     await sendEmail(url, user.email, "Reset your password");
-    res.status(200).json({message:"Check your mail account for password reset link..."})
+    res
+      .status(200)
+      .json({ message: "Check your mail account for password reset link..." });
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 //================================================================
-
-

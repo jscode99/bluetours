@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Layout } from "../../components/Layout";
 import { Card, Button, Form, Container, Row, Col } from "react-bootstrap";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Input from "../../components/UI/Input";
-import M from 'materialize-css'
+import M from "materialize-css";
 
 function Signup() {
-  
   // useHistory initialization
   let history = useHistory();
 
   // state initialization
   const [formdata, setformdata] = useState({
-    fullname:"",
+    fullname: "",
     email: "",
     password: "",
   });
@@ -35,10 +34,10 @@ function Signup() {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-       fullname:fullname,
+        fullname: fullname,
         email: email,
-        password: password
-      })
+        password: password,
+      }),
     })
       // Data to json object
       .then(res => res.json())
@@ -55,14 +54,13 @@ function Signup() {
             classes: "#388e3c green darken-2",
           });
           //redirecting to signin route
-            // history.push("/signin");
+          // history.push("/signin");
         }
-    
       })
-    //catch error to console
+      //catch error to console
       .catch(err => {
-      console.log(err);
-    })
+        console.log(err);
+      });
   };
 
   return (
