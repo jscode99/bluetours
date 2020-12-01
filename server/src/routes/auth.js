@@ -1,4 +1,4 @@
-const router = require("express").Router();3
+const router = require("express").Router();
 //controller
 const { signup, signin, requireSignin } = require("../controller/auth");
 
